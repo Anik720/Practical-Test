@@ -74,9 +74,24 @@ app.use((req, res, next) => {
 });
 
 // routes
+app.get('/', (req,res)=>{
+  res.send("Hello, Node.js!")
+  next()
+});
+
+app.use('/api/info', (req,res)=>{
+res.status(200).json({
+  details:"Nice"
+})
+});
+
 app.use('/api/users', userRouter);
-app.use('/api/auth', authRoutes);
-app.use('/api/v1/article', articleRoutes);
+app.use('/api', authRoutes);
+
+
+// app.use('/api/v1/article', (req,res)=>{
+//   res.send("HElloo there")
+// });
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all('*', (req, res, next) => {

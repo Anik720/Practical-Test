@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: [true, 'Please tell us your name!'],
 
@@ -20,49 +20,20 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
-  photo: String,
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
     select: false,
   },
-  passwordConfirm: {
+  role: {
     type: String,
-    required: [true, 'Please confirm your password'],
-    validate: {
-      // This only works on CREATE and SAVE!!!
-      validator: function (el) {
-        return el === this.password;
-      },
-      message: 'Passwords are not the same!',
-    },
+    enum: ['user', 'admin'],
+    default: 'user',
   },
-  activationLink: {
-    type: String,
-  },
-  socialLogins: [
-    {
-      type: String,
-      enum: ['google', 'facebook'],
-    },
-  ],
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  activated: {
-    type: Boolean,
-    default: false,
-  },
+ 
 });
 
-// userSchema.pre(/^find/, function (next) {
-//   next();
-// });
 
 // Encrpt the password ad Presave it
 userSchema.pre('save', async function (next) {
@@ -75,31 +46,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.createAccountActivationLink = function () {
-  const activationToken = crypto.randomBytes(32).toString('hex');
-  // console.log(activationToken);
-  this.activationLink = crypto.createHash('sha256').update(activationToken).digest('hex');
-  // console.log({ activationToken }, this.activationLink);
-  return activationToken;
-};
-
 // comparing password
 userSchema.methods.correctPassword = async function (candidate_Password, user_Password) {
   console.log(candidate_Password);
   return await bcrypt.compare(candidate_Password, user_Password);
 };
 
-userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
-
-  console.log(resetToken);
-
-  this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-
-  // console.log({ resetToken }, this.passwordResetToken);
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  return resetToken;
-};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

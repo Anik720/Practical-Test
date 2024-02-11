@@ -13,8 +13,6 @@ router
   .get(userController.getMe, userController.getUser)
   .patch(userController.getMe, userController.updateUser);
 
-router.patch('/updatePassword', authController.updatePassword);
-
 router
   .route('/')
   .get(userController.getAllUsers)

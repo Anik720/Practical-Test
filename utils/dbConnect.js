@@ -5,7 +5,7 @@ const DBCluster = process.env.DATABASE;
 
 let DB_URL = DBCluster;
 
-DB_URL = DB_URL.replace("mongodb+srv://golamanik192:tmprOCNoI4ZgDGUZ@cluster0.bnbngdt.mongodb.net/?retryWrites=true&w=majority");
+DB_URL = DB_URL.replace("mongodb+srv://golamanik192:tmprOCNoI4ZgDGUZ@cluster0.bnbngdt.mongodb.net/practicaltask?retryWrites=true&w=majority");
 //DB_URL = DB_URL.replace('<DB_NAME>', process.env.DB_NAME);
 
 // if (process.argv[2] && process.argv[2] === 'dblocal')
