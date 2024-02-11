@@ -8,7 +8,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const path = require('path');
 const hpp = require('hpp');
-
+const swaggerJsdoc = require("swagger-jsdoc")
+const swaggerUi = require("swagger-ui-express");
 const userRouter = require('./routers/userRouter');
 const authRoutes = require('./routers/authRoutes');
 const articleRoutes = require('./routers/articleRoutes');
@@ -86,8 +87,40 @@ res.status(200).json({
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/article', articleRoutes);
 app.use('/api', authRoutes);
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Anik Article Express API with Swagger",
+      version: "0.1.0",
+      description:
+        "This is a simple Article API application made with Express and documented with Swagger",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "Golam Kibria Anik",
 
+      },
+    },
+    servers: [
+      {
+        url: "http://localhost:7000/",
+      },
+    ],
+  },
+  apis: ["./routers/*.js"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+);
 
 // app.use('/api/v1/article', (req,res)=>{
 //   res.send("HElloo there")

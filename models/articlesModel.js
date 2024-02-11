@@ -10,22 +10,9 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please give a article description!"],
   },
-  image: String,
 
-  editor: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Editor",
-    },
-  ],
 });
-// articleSchema.pre(/^find/, function (next) {
-//   this.populate({
-//     path: "editor",
-//   });
 
-//   next();
-// });
 const Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;
