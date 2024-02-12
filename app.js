@@ -33,7 +33,7 @@ app.set('views', path.join(__dirname, 'views'));
 //   }
 // }
 // app.use(cors(corsOptions))
- 
+
 
 app.use(express.json());
 
@@ -75,15 +75,15 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.get('/', (req,res)=>{
+app.get('/', (req, res) => {
   res.send("Hello, Node.js!")
   next()
 });
 
-app.use('/api/info', (req,res)=>{
-res.status(200).json({
-  details:"Nice"
-})
+app.use('/api/info', (req, res) => {
+  res.status(200).json({
+    details: "This Node.js project which is a Article Express API building Express.js applications with MongoDB integration. It includes Docker configuration for containerization.    The features of this project is that user can sign up and login into the system and token will be generate. Using that token a protected route api/v1/articles is implemented which user can get access. For that two two middlewares are used. One is for user is loggedin or not and another one is for checking the role."
+  })
 });
 
 app.use('/api/users', userRouter);
